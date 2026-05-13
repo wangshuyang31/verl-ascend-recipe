@@ -1,4 +1,4 @@
-# verl-recipe
+# verl-ascend-recipe
 
 `verl--ascend-recipe` hosts ascend specified recipes based on [verl](https://github.com/verl-project/verl) contributed by the community.
 
