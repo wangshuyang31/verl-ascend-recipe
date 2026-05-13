@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ascend CI Case Diff Scan"
+  short_description: "Scan external verl CI workflow case coverage gaps"
+  default_prompt: "Use $ascend-ci-case-diff-scan to analyze an external verl repository, compare CPU/GPU workflow cases against Ascend workflows, and report missing or unmatched NPU coverage."
