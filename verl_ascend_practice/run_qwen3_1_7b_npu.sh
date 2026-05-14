@@ -76,7 +76,6 @@ TRAINER=(
     trainer.project_name='verl_veomni_test'
     trainer.n_gpus_per_node="${NUM_GPUS}"
     trainer.nnodes=1
-    trainer.device=npu
     trainer.save_freq=100
     trainer.test_freq=-1
     trainer.total_epochs=1
