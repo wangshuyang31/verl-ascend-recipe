@@ -70,7 +70,7 @@ REF=(
 )
 
 TRAINER=(
-    trainer.use_legacy_worker_impl=disable
+    +trainer.use_legacy_worker_impl=disable
     trainer.critic_warmup=0
     trainer.logger=console
     trainer.project_name='verl_veomni_test'
