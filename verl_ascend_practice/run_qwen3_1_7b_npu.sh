@@ -1,3 +1,8 @@
+#!/usr/bin/env bash
+# GRPO | Qwen3-1.7B | VeOmni training | Ascend NPU
+# Knobs:
+#   INFER_BACKEND          rollout backend: vllm | sglang | trtllm   (default: vllm)
+
 set -x
 ENGINE=${1:-vllm}
 
