@@ -474,8 +474,63 @@ scp -r root@90.90.122.196:/autotest/pytorch/torch_autotest/model/run/MindSpeed_R
 
 scp -r root@90.90.122.196:/autotest/pytorch/torch_autotest/model/run/MindSpeed_RL_DAPO_Qwen25_32B/8p_bf16/MindSpeed-RL/configs/dapo_qwen25_32b_A2_20k.yaml /autotest/pytorch/torch_autotest/model/run/MindSpeed_RL_DAPO_Qwen25_32B/8p_bf16/MindSpeed-RL/configs/
 
-【Computing-lab】环境排期 - 服务器密码下发
-【工单标题】qwen3-next-80b开发
-【说明】如需root权限，请登录后使用 `sudo su - root` 切换；时间段到期将回收密码和用户进程，请提前保管好数据。如无法正常使用，请提前联系管理员 x00893919 处理！！
------------------------------------------------------------------------------------
+#docker 
+docker build/pull 网络问题解决方法
+2026-04-21 14:21 由 叶芝蓓 00943488 创建，于 2026-04-21 14:21 由 叶芝蓓 00943488 最后修改。 内容存疑 点我
+下面的代理IP请自己换一个能用的
 
+【QA】Ascendhub镜像下载常见问题 - 昇腾之家 - 3MS知识管理社区
+vi /etc/systemd/system/docker.service.d/proxy.conf
+添加以下代理内容
+
+[Service]
+Environment="HTTP_PROXY=http://p_atlas:proxy%%40123@141.4.220.168:8080"
+Environment="HTTPS_PROXY=http://p_atlas:proxy%%40123@141.4.220.168:8080"
+Environment="NO_PROXY=localhost,127.0.0.1,.example.com"
+​
+重新加载 systemd 配置
+使 systemd 识别到新增或修改的 drop-in 文件：
+
+bash
+sudo systemctl daemon-reload
+重启 Docker 服务
+应用新的配置：
+
+bash
+sudo systemctl restart docker
+（可选）检查服务状态
+确认 Docker 已正常启动：
+
+bash
+sudo systemctl status docker
+docker pull执行到这里就可以了 
+
+docker build继续执行下面的
+
+ 
+
+# 添加代理
+IP=141.4.220.168
+export http_proxy="http://p_atlas:proxy%40123@$IP:8080"
+export https_proxy="http://p_atlas:proxy%40123@$IP:8080"
+export no_proxy=127.0.0.1,.huawei.com,localhost,local,.local
+export GIT_SSL_NO_VERIFY=1
+git config --global http.sslVerify false
+git config --global https.proxy https://p_atlas:proxy%40123@$IP:8080 --add
+git config --global http.proxy http://p_atlas:proxy%40123@$IP:8080 --add
+​
+ 
+
+# dockerfile里可能需要添加
+ENV GIT_SSL_NO_VERIFY=true
+
+RUN pip config --user set global.index https://mirrors.huaweicloud.com/repository/pypi && \
+    pip config --user set global.index-url https://mirrors.huaweicloud.com/repository/pypi/simple && \
+    pip config --user set global.trusted-host mirrors.huaweicloud.com
+​
+ 
+
+docker build --no-cache --network host --build-arg http_proxy=${http_proxy} --build-arg https_proxy=${https_proxy} --build-arg no_proxy=${no_proxy} --progress=plain -f vllm013-cann85-nobuild-triton-Dockerfile -t vllm013-cann85-nobuild-triton:v1 .
+-f 后面的是Dockerfile文件名称
+
+-t 后面的是构建出来的镜像名字
