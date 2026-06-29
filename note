@@ -1,0 +1,481 @@
+Slime
+
+docker load -i /efs_rl/c00833002/images/verl_0227_main.tar
+docker run -dit \
+--ipc=host \
+--network host \
+--name slime_wsy' \
+--privileged \
+-v /usr/local/Ascend/driver:/usr/local/Ascend/driver \
+-v /usr/local/Ascend/firmware:/usr/local/Ascend/firmware \
+-v /usr/local/sbin/:/usr/local/sbin/ \
+-v /home/:/home/ \
+-v /data/:/data/ \
+-v /efs_rl:/efs_rl \
+-v /usr/sbin/:/usr/sbin/ \
+slime-ascend:8.5.0-a3-0427 \
+/bin/bash
+docker start slime-wsy
+docker exec -it slime-wsy
+
+升级megatron016 + vllm018
+cd /mnt/share/w00914260/images
+docker import vllm018megatron016.tar vllm018
+docker run -dit --ipc=host --network host --name vllm018 --privileged -v /usr/local/Ascend/driver:/usr/local/Ascend/driver -v /usr/local/Ascend/firmware:/usr/local/Ascend/firmware -v /usr/local/sbin/:/usr/local/sbin/ -v /home/:/home/ -v /efs_rl/:/efs_rl/ -v /data/:/data -v /usr/sbin/:/usr/sbin/ vllm018:v1 /bin/bash
+docker start vllm018
+docker exec -it vllm018 bash
+source /efs_rl/c00943098/qwen35/cann/cann900_b160/ascend-toolkit/set_env.sh
+source /efs_rl/c00943098/qwen35/cann/cann900_b160/nnal/atb/set_env.sh
+
+mkdir -p /efs_rl
+chmod -R 777 /efs_rl
+mount -t nfs -o vers=3,timeo=600,noresvport,nolock,tcp 7.150.8.255:/ /efs_rl/
+export VLLM_VERSION=0.18.0
+source /mnt/share/c00833002/cann/B160/ascend-toolkit/set_env.sh
+source /mnt/share/c00833002/cann/B160/nnal/atb/set_env.sh
+
+A2 docker
+docker load -i verl_vllm013_85cann.tar.gz
+docker run -dit --ipc=host --network host --name verl_wsy --privileged -v /usr/local/Ascend/driver:/usr/local/Ascend/driver -v /usr/local/Ascend/firmware:/usr/local/Ascend/firmware -v /usr/local/sbin/:/usr/local/sbin/ -v /home/:/home/ -v /data/:/data -v /usr/sbin/:/usr/sbin/ -v /mnt/:/mnt/ uptoverl:v2use /bin/bash
+
+GLM
+cd /mnt/share/w00914260/images
+docker load -i verl_0227_main.tar
+docker run -dit --ipc=host --network host --name verl_GLM --privileged -v /usr/local/Ascend/driver:/usr/local/Ascend/driver -v /usr/local/Ascend/firmware:/usr/local/Ascend/firmware -v /usr/local/sbin/:/usr/local/sbin/ -v /home/:/home/ -v /data/:/data -v /usr/sbin/:/usr/sbin/ -v /mnt/:/mnt/ verl:0227-main /bin/bash
+docker start verl_GLM
+docker exec -it verl_GLM bash
+export VLLM_VERSION=0.13.0
+source /mnt/share/c00833002/cann/B160/ascend-toolkit/set_env.sh
+source /mnt/share/c00833002/cann/B160/nnal/atb/set_env.sh
+
+Vllm 013
+cd /mnt/share/w00914260/images
+docker load -i verl_0227_main.tar
+docker run -dit --ipc=host --network host --name verl_fully --privileged -v /usr/local/Ascend/driver:/usr/local/Ascend/driver -v /usr/local/Ascend/firmware:/usr/local/Ascend/firmware -v /usr/local/sbin/:/usr/local/sbin/ -v /home/:/home/ -v /data/:/data -v /usr/sbin/:/usr/sbin/ -v /mnt/:/mnt/ verl:0227-main /bin/bash
+docker start verl_fully
+docker exec -it verl_fully bash
+export VLLM_VERSION=0.18.0
+source /mnt/share/c00833002/cann/B160/ascend-toolkit/set_env.sh
+source /mnt/share/c00833002/cann/B160/nnal/atb/set_env.sh
+
+
+export VLLM_VERSION=0.13.0
+source /mnt/share/c00833002/cann/B160/ascend-toolkit/set_env.sh
+source /mnt/share/c00833002/cann/B160/nnal/atb/set_env.sh
+docker run -dit --ipc=host --network host --name verl_03 --privileged -v /usr/local/Ascend/driver:/usr/local/Ascend/driver -v /usr/local/Ascend/firmware:/usr/local/Ascend/firmware -v /usr/local/sbin/:/usr/local/sbin/ -v /home/:/home/ -v /data/:/data -v /usr/sbin/:/usr/sbin/ -v /mnt/:/mnt/ verl:0227-main /bin/bash
+docker start verl_03
+docker exec -it verl_03 bash
+
+
+source /mnt/share/c00943098/CANN_version/2026Q1B020/ascend-toolkit/set_env.sh
+source /mnt/share/c00943098/CANN_version/2026Q1B020/nnal/atb/set_env.sh
+
+cd /mnt/share/w00914260/images
+docker import /mnt/share/w00914260/wsy_python311_verl08.tar vllm013_wsy:v1
+docker run -dit --ipc=host --network host --name 'verl_03_28' --privileged -v /usr/local/Ascend/driver:/usr/local/Ascend/driver -v /usr/local/Ascend/firmware:/usr/local/Ascend/firmware -v /usr/local/sbin/:/usr/local/sbin/ -v /home/:/home/ -v /data/:/data -v /usr/sbin/:/usr/sbin/ -v /mnt/:/mnt/ verl:0227-main /bin/bash
+docker start verl_03_28
+docker exec -it verl_03_28 bash
+conda activate py311
+source /mnt/share/nurxat/cann/8.5.0.B160/cann-8.5.0/set_env.sh
+source /mnt/share/nurxat/cann/8.5.0.B160/ascend-toolkit/set_env.sh
+source /mnt/share/nurxat/cann/8.5.0.B160/nnal/atb/set_env.sh
+export VLLM_VERSION=0.13.0
+
+python -m verl.model_merger merge
+--backend veomni
+--local_dir /efs_rl/w00914260/vllm018megatron016/verl/checkpoints/verl_veomni_test/gsm8k/global_step_100/actor
+--target_dir /qwen3-30-after-rl
+
+vllm serve /efs_rl/w00914260/vllm018megatron016/verl/checkpoints/verl_veomni_test/gsm8k/global_step_100/ \
+       --served-model-name auto \
+       --gpu-memory-utilization 0.9 \
+       --max-num-seqs 128
+       --max-model-len 10240 \
+       --max-num-batched-tokens 10240 \
+       --enforce-eager \
+       --trust-remote-code \
+       --distributed_executor_backend=mp \
+       --tensor-parallel-size 4 \
+       --data-parallel-size 4\
+       --generation-config vllm \
+       --port 6380
+       
+Veomni镜像
+cd /mnt/share/w00914260/images
+docker import verl_veomini_wsy.tar verl_veomni_wsy:v1
+docker run -dit --ipc=host --network host --name 'verl_veomni_wsy' --privileged -v /usr/local/Ascend/driver:/usr/local/Ascend/driver -v /usr/local/Ascend/firmware:/usr/local/Ascend/firmware -v /usr/local/sbin/:/usr/local/sbin/ -v /home/:/home/ -v /data/:/data -v /mnt/:/mnt/ verl:0227-main /bin/bash
+
+docker start verl_veomni_wsy
+docker exec -it verl_veomni_wsy bash
+conda activate verl_pt27_25rc2_0822daily
+source /usr/local/Ascend/cann/Q3B130/ascend-toolkit/set_env.sh
+source /usr/local/Ascend/cann/Q3B130/nnal/atb/set_env.sh 
+source /mnt/share/c00943098/CANN_version/2026Q1B020/ascend-toolkit/set_env.sh
+source /mnt/share/c00943098/CANN_version/2026Q1B020/nnal/atb/set_env.sh
+
+061 verl
+docker import /mnt/share/d00948921/envs/images/verl_pt27_25rc3_A3.tar wsy_verl_061:v1
+docker run -dit --ipc=host --network host --name 'verl061' --privileged -v /usr/local/Ascend/driver:/usr/local/Ascend/driver -v /usr/local/Ascend/firmware:/usr/local/Ascend/firmware -v /usr/local/sbin/:/usr/local/sbin/ -v /home/:/home/ -v /mnt/share/:/mnt/share/ -v /data/:/data vllm011:v1 /bin/bash
+
+
+GPU
+docker run --name vllm018 \
+--runtime=nvidia \
+--privileged=true \
+--cap-add=SYS_ADMIN \
+--gpus=all \
+--ipc=host \
+--shm-size=16g \
+--net=host \
+-v /home/:/home/ \
+-v /data/:/data/ \
+-v /usr/sbin/ifconfig:/usr/sbin/ifconfig:ro \
+-it verlai/verl:vllm018.dev1 \
+/bin/bash
+
+
+
+
+docker import /mnt/share/w00914260/verl061.tar verl:061
+docker run -dit --ipc=host --network host --name 'verl061' --privileged -v /usr/local/Ascend/driver:/usr/local/Ascend/driver -v /usr/local/Ascend/firmware:/usr/local/Ascend/firmware -v /usr/local/sbin/:/usr/local/sbin/ -v /home/:/home/ -v /mnt/share/:/mnt/share/ -v /data/:/data verl:061 /bin/bash
+source /mnt/share/c00943098/CANN_version/Q3B130/ascend-toolkit/set_env.sh
+source /mnt/share/c00943098/CANN_version/Q3B130/nnal/atb/set_env.sh
+打流
+# 1. 指定MPICH的执行路径（优先级最高），可能需要修改mpich-3.2.1
+export PATH=/usr/local/mpich-4.1.3/bin:$PATH
+
+# 2. 加载昇腾CANN工具链的核心环境变量（重中之重！昇腾所有工具/驱动/NPU依赖的环境都在这里），根据cann版本修改
+source /home/cann/8.5.0.B095/cann-8.5.0/set_env.sh
+source /home/cann/8.5.0.B095/nnal/atb/set_env.sh
+
+# 3. 指定动态链接库路径：追加昇腾CANN的lib64 + MPICH的lib，解决运行时「找不到HCCL库/MPI库」的问题
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/cann/8.5.0.B095/cann/lib64:/usr/local/mpich-4.1.3/lib/
+
+# 4. 进入CANN官方自带的hccl_test工具目录（原生打流工具，比第三方工具精准，昇腾官方唯一推荐）
+cd /home/cann/8.5.0.B095/cann/tools/hccl_test/
+
+# 5. 编译hccl_test：指定MPI根目录和CANN根目录，编译出对应的all_reduce_test等二进制文件
+make MPI_HOME=/usr/local/mpich-4.1.3 ASCEND_DIR=/home/cann/8.5.0.B095/cann/
+
+# 6. HCCL核心环境变量：设置通信缓冲区大小2048MB，提升大张量通信的稳定性，避免丢包/超时
+export HCCL_BUFFSIZE=2048
+
+# 7. 昇腾最核心的网卡绑定！指定HCCL通信走的物理网卡，避免走管理网，这是【带宽跑满的关键】
+export HCCL_SOCKET_IFNAME=enp189s0f0
+
+# 8. 核心打流命令：n之后的参数是卡的数量
+mpirun -n 32 -hosts 80.48.5.90,80.48.5.89 -ppn 16 ./bin/all_reduce_test -b 1G -e 1G -f 2 -d fp32 -o sum -p 16
+
+# 8卡的：
+mpirun -n 16 -hosts 80.5.5.65,80.5.5.69 -ppn 8 ./bin/all_reduce_test -b 1G -e 1G -f 2 -d fp32 -o sum -p 8
+
+
+grep -rn "ERROR" /root/ascend/log/ #抓取首报错
+打流2
+hccn_tool -i 0 -netdetect -s address 10.0.233.11
+hccn_tool -i 1 -netdetect -s address 10.0.232.11
+hccn_tool -i 2 -netdetect -s address 124.0.4.41
+hccn_tool -i 3 -netdetect -s address 124.0.4.49
+hccn_tool -i 4 -netdetect -s address 124.0.4.57
+hccn_tool -i 5 -netdetect -s address 124.0.4.65
+hccn_tool -i 6 -netdetect -s address 124.0.4.25
+hccn_tool -i 7 -netdetect -s address 124.0.4.33
+云机器-vllm018
+docker import vllm018.tar verl:0429-main
+docker run -dit \
+--ipc=host \
+--network host \
+--name 'vllm_018' \
+--privileged \
+-v /usr/local/Ascend/driver:/usr/local/Ascend/driver \
+-v /usr/local/Ascend/firmware:/usr/local/Ascend/firmware \
+-v /usr/local/Ascend/tools:/usr/local/Ascend/tools \
+-v /usr/local/sbin/:/usr/local/sbin/ \
+-v /usr/local/bin/:/usr/local/bin/ \
+-v /home/:/home/ \
+-v /data/:/data/ \
+-v /efs_rl:/efs_rl \
+-v /usr/sbin/:/usr/sbin/ \
+-v /usr/bin/:/usr/bin/ \
+vllm018:v1 \
+/bin/bash -c "export PATH=/usr/local/python3.11.14/bin:/usr/local/Ascend/driver/tools:\$PATH && exec /bin/bash"
+
+docker start vllm_018
+docker exec -it vllm_018 bash
+export LD_LIBRARY_PATH=/usr/local/Ascend/driver/lib64/driver/:/usr/local/Ascend/driver/lib64/common:/usr/local/Ascend/driver/lib64::/usr/local/Ascend/driver/lib64/driver:/usr/local/Ascend/driver/lib64/common:/usr/local/lib
+export PATH=/usr/local/python3.11.14/bin:$PATH
+
+
+source /efs_rl/c00833002/cann/B160/ascend-toolkit/set_env.sh
+source /efs_rl/c00833002/cann/B160/nnal/atb/set_env.sh
+
+云机器
+cp /etc/resolv.conf /etc/resolv.conf.back
+cat > /etc/resolv.conf
+# Generated by NetworkManager
+search openstacklocal
+nameserver 10.10.10.10
+nameserver 100.125.248.9
+nameserver 100.125.248.10
+export http_proxy="http://w00914260:Davit.1998@proxy.huawei.com:8080/"
+export https_proxy="http://w00914260:Davit.1998@proxy.huawei.com:8080/"
+unset https_proxy
+unset http_proxy
+vim  ~/.bashrc
+source /efs_rl/w00914260/cann/ascend-toolkit/set_env.sh
+source /efs_rl/w00914260/cann/nnal/atb/set_env.sh
+
+docker load -i /efs_rl/c00833002/images/verl_0227_main.tar
+
+docker run -dit \
+--ipc=host \
+--network host \
+--name 'vllm018' \
+--privileged \
+-v /usr/local/Ascend/driver:/usr/local/Ascend/driver \
+-v /usr/local/Ascend/firmware:/usr/local/Ascend/firmware \
+-v /usr/local/sbin/:/usr/local/sbin/ \
+-v /home/:/home/ \
+-v /data/:/data/ \
+-v /efs_rl:/efs_rl \
+-v /usr/sbin/:/usr/sbin/ \
+vllm018:v1 \
+/bin/bash
+
+docker load -i /efs_rl/w00914260/vllm013.tar
+docker run -dit \
+--ipc=host \
+--network host \
+--name 'verl_03' \
+--privileged \
+-v /usr/local/Ascend/driver:/usr/local/Ascend/driver \
+-v /usr/local/Ascend/firmware:/usr/local/Ascend/firmware \
+-v /usr/local/sbin/:/usr/local/sbin/ \
+-v /home/:/home/ \
+-v /data/:/data/ \
+-v /efs_rl:/efs_rl \
+-v /usr/sbin/:/usr/sbin/ \
+vllm013-y:v0309 \
+/bin/bash
+docker start verl_03
+docker exec -it verl_03 bash
+export VLLM_VERSION=0.13.0
+
+docker load -i /efs_rl/c00833002/images/verl_0227_main.tar
+docker run -dit \
+--ipc=host \
+--network host \
+--name 'verl_03' \
+--privileged \
+-v /usr/local/Ascend/driver:/usr/local/Ascend/driver \
+-v /usr/local/Ascend/firmware:/usr/local/Ascend/firmware \
+-v /usr/local/sbin/:/usr/local/sbin/ \
+-v /home/:/home/ \
+-v /data/:/data/ \
+-v /efs_rl:/efs_rl \
+-v /usr/sbin/:/usr/sbin/ \
+verl:0227-main \
+/bin/bash
+docker start verl_03_
+docker exec -it verl_03 bash
+export VLLM_VERSION=0.13.0
+source /efs_rl/cann/Q1B020/ascend-toolkit/set_env.sh
+source /efs_rl/cann/Q1B020/nnal/atb/set_env.sh
+source /efs_rl/c00833002/cann/B160/ascend-toolkit/set_env.sh
+source /efs_rl/c00833002/cann/B160/nnal/atb/set_env.sh
+export VLLM_VERSION=0.13.0
+
+docker import /efs_rl/w00914260/wsy_python311_verl07_latest.tar verl_env_move_wsy:v2
+docker run -it \
+    --ipc=host \
+    --network=host \
+    --name wsy_vllm011 \
+    --privileged \
+    -v /usr/local/sbin/:/usr/local/sbin/ \
+    -v /usr/local/Ascend/driver:/usr/local/Ascend/driver \
+    -v /usr/local/Ascend/firmware:/usr/local/Ascend/firmware \
+-v /home/:/home/ \
+-v /data/:/data/ \
+-v /efs_rl:/efs_rl \
+-v /usr/sbin/:/usr/sbin/ \
+verl_env_move_wsy:v2 \
+/bin/bash
+    python3.11
+
+docker run -dit --ipc=host --network host --name 'verl_env_move_wsy' --privileged -v /usr/local/Ascend/driver:/usr/local/Ascend/driver -v /usr/local/Ascend/firmware:/usr/local/Ascend/firmware -v /usr/local/sbin/:/usr/local/sbin/ -v /home/:/home/ -v /data/:/data -v /efs_rl:/efs_rl -v /usr/sbin/:/usr/sbin/ -v /mnt/:/mnt/ verl_env_move_wsy:v1 /bin/bash
+
+docker start wsy_verl07
+docker exec -it wsy_verl07 /bin/bash 
+export LD_LIBRARY_PATH=/usr/local/Ascend/driver/lib64/driver/:/usr/local/Ascend/driver/lib64/common:/usr/local/Ascend/driver/lib64::/usr/local/Ascend/driver/lib64/driver:/usr/local/Ascend/driver/lib64/common:/usr/local/lib
+export PATH=/usr/local/python3.11.14/bin:$PATH
+
+source /efs_rl/w00914260/cann/ascend-toolkit/set_env.sh
+source /efs_rl/w00914260/cann/nnal/atb/set_env.sh
+
+VERL-main镜像
+
+
+docker load -i /mnt/share/w00957060/wyenv_fin.tar
+docker run -dit --ipc=host --network host --name 'vllm018' --privileged -v /usr/local/Ascend/driver:/usr/local/Ascend/driver -v /usr/local/Ascend/firmware:/usr/local/Ascend/firmware -v /usr/local/sbin/:/usr/local/sbin/ -v /home/:/home/ -v /data/:/data -v /mnt/:/mnt/ vllm018:v1 /bin/bash
+
+docker start wy_env
+docker exec -it wy_env bash
+conda activate verl_pt27_25rc2_0822daily
+source /mnt/share/nurxat/cann/8.5.0.B160/cann-8.5.0/set_env.sh
+source /mnt/share/nurxat/cann/8.5.0.B160/ascend-toolkit/set_env.sh
+source /mnt/share/nurxat/cann/8.5.0.B160/nnal/atb/set_env.sh
+
+cd /mnt/share/w00914260
+docker import verl_main_wsy_latest.tar verl_env_move_wsy:v1
+
+docker run -dit --ipc=host --network host --name 'verl_env_move_wsy' --privileged -v /usr/local/Ascend/driver:/usr/local/Ascend/driver -v /usr/local/Ascend/firmware:/usr/local/Ascend/firmware -v /usr/local/sbin/:/usr/local/sbin/ -v /home/:/home/ -v /data/:/data -v /mnt/:/mnt/ verl_env_move_wsy:v1 /bin/bash
+
+docker start verl_env_move_wsy
+docker exec -it verl_env_move_wsy bash
+conda activate verl_pt27_25rc2_0822daily
+source /usr/local/Ascend/cann/Q3B130/ascend-toolkit/set_env.sh
+source /usr/local/Ascend/cann/Q3B130/nnal/atb/set_env.sh
+
+source /mnt/share/c00943098/CANN_version/Q3B130/ascend-toolkit/set_env.sh
+source /mnt/share/c00943098/CANN_version/Q3B130/nnal/atb/set_env.sh
+docker export
+docker export -o /home/w00914260/veomni.tar verl_fully
+docker export -o /mnt/share/w00914260/verl_fully_megatron.tar verl_235B
+docker export -o /mnt/share/w00914260/wsy_python311_verl08.tar verl_veomni_wsy
+docker export -o mindspeed_rl_2.2.0_A3.tar nsy_mindspeed_rl
+docker export -o /mnt/share/w00914260/wsy_verl_main_A3.tar verl_wsy_rc3
+共享存储
+sh /root/a800/auto_a800/9000_mount.sh
+sh /home/a800/auto_a800/9000_mount.sh
+杀进程
+出现过杀不干净的任务，使用如下命令一次杀除残余进程
+
+ps -ef | grep "python"| grep -v grep | awk '{print $2}' | xargs -t -i kill -9 {};pkill -9 python; pkill -9 torchrun;ray stop
+
+# 杀默认进程
+
+ps -ef | grep "defunct"|grep python| awk '{print $3}'|xargs -t -i kill -9 {};ps -ef | grep "defunct"|grep torchrun| awk '{print $3}'|xargs -t -i kill -9 {}
+
+Verl-迁移
+cd /mnt/share/c00943098/docker_file
+docker import env_move_docker.tar env_move_docker:v1
+
+docker run -dit --ipc=host --network host --name 'verl_env_move_wsy' --privileged -v /usr/local/Ascend/driver:/usr/local/Ascend/driver -v /usr/local/Ascend/firmware:/usr/local/Ascend/firmware -v /usr/local/sbin/:/usr/local/sbin/ -v /home/:/home/ -v /data/:/data -v /mnt/:/mnt/ env_move_docker:v1 /bin/bash
+
+docker start verl_env_move_wsy
+docker exec -it verl_env_move_wsy bash
+
+conda activate verl_pt27_25rc2_0822daily
+source /usr/local/Ascend/cann/Q3B130/ascend-toolkit/set_env.sh
+source /usr/local/Ascend/cann/Q3B130/nnal/atb/set_env.sh
+cd path/to/your/env
+
+
+cann
+版本名 版本号 获取链接
+FrameworkPTAdapter FrameworkPTAdapter 26.0.0.B020（7.3.T999.B050） https://cmc-szv.clouddragon.huawei.com/cmcversion/index/releaseView?deltaId=13656063142724864&isSelect=Inner
+
+CANN CANN 9.0.0.B020 https://cmc-szv.clouddragon.huawei.com/cmcversion/index/releaseView?deltaId=13960627815515392&isSelect=Software
+
+HDK Ascend HDK 26.0.0.B020 https://cmc-szv.clouddragon.huawei.com/cmcversion/index/releaseView?deltaId=14081611235919104&isSelect=Software
+
+/mnt/share/c00943098/CANN_version/2026Q1900
+source /mnt/share/c00943098/CANN_version/2026Q1900/ascend-toolkit/set_env.sh
+source /mnt/share/c00943098/CANN_version/2026Q1900/nnal/atb/set_env.sh
+conda 
+Conda打包
+conda pack -n yzb_vllm013 /home/w00914260/vllm013.tar.gz --ignore-editable-packages --ignore-missing-files
+
+conda pack -n wsy_veomni -o /home/w00914260/wsy_veomnipy311_vllm12_torch28_h100.tar.gz --ignore-editable-packages --ignore-missing-files
+
+conda pack -n wsy_verl -o /home/w00914260/wsy_verl_a100.tar.gz --ignore-editable-packages --ignore-missing-files
+conda pack -n h100wsy_verl -o /home/w00914260/wsy_verl_h100.tar.gz --ignore-editable-packages --ignore-missing-files
+h100wsy_verl
+
+
+Conda解包
+tar -xzvf /home/w00914260/wsy_verl_a100.tar.gz -C wsy_verl_a100/
+tar -xzvf /home/w00914260/wsy_verl_h100.tar.gz -C wsy_new_verl_h100/
+tar -xzvf /mnt/share/x00855332/xuehan_slime.tar.gz -C wsy_slime/
+
+tar -xzvf /home/y00943488/vllm013_0309_a2.tar.gz -C wsy_veomni/
+Snapshot
+https://wiki.huawei.com/domains/64729/wiki/246636/WIKI202512259565027
+今天用蓓蓉姐教的方法采集了一下NPU显存 snapshot，总结了使用方法，大家可以
+https://wiki.huawei.com/domains/64729/wiki/246636/WIKI202512259565533，机器root满了可以参考这条wiki
+hugging-face下载模型（每个服务器上都需要有一份），或者本地下载模型
+huggingface-cli download --resume-download Qwen/Qwen2.5-32B-Instruct --local-dir .
+正常配置网卡
+export GLOO_SOCKET_IFNAME=enp83s0f0np0
+export NCCL_SOCKET_IFNAME=enp83s0f0np0
+export NCCL_IB_GID_INDEX=1
+## IB网卡有问题时设置
+export NCCL_IB_DISABLE=1
+
+
+
+
+
+#主节点：IP：90.91.103.33
+ray start --head --port=6379 --dashboard-port=8265
+#从节点
+
+ray start --address='90.90.122.31:6379'
+
+ray start --address='51.62.5.25:6379'
+# 在主节点查看有多少个节点加入
+ray status
+# 停止
+ray stop
+
+脚本前加
+export PYTHONUNBUFFERED=1
+
+符号链接
+ln -s /data1 /data
+ 
+
+状态：
+ps -aux | grep ray
+
+DAPO 20K
+/autotest/pytorch/torch_autotest/model/run/MindSpeed_RL_DAPO_Qwen25_32B/8p_bf16/MindSpeed-RL
+
+source /usr/local/Ascend/ascend-toolkit/set_env.sh
+source /usr/local/Ascend/nnal/atb/set_env.sh
+docker exec -it ascend_AUTO_TEST /bin/bash
+
+直接容器外头
+pip install ascend-nputop
+nputop
+
+
+
+
+Verl -235b
+cd /mnt/share/c00943098/docker_file
+docker import env_move_docker.tar env_move_docker:v1
+
+docker run -dit --ipc=host --network host --name 'verl_env_move' --privileged -v /usr/local/Ascend/driver:/usr/local/Ascend/driver -v /usr/local/Ascend/firmware:/usr/local/Ascend/firmware -v /usr/local/sbin/:/usr/local/sbin/ -v /home/:/home/ -v /data/:/data -v /mnt/:/mnt/ env_move_docker:v1 /bin/bash
+
+docker start verl_env_move
+docker exec -it verl_env_move bash
+
+conda activate verl_pt27_25rc2_0822daily
+source /usr/local/Ascend/cann/Q3B130/ascend-toolkit/set_env.sh
+source /usr/local/Ascend/cann/Q3B130/nnal/atb/set_env.sh
+cd path/to/your/env
+dp_model_parallel_size ->data_model_parallel_size
+
+指定第几张卡来跑的指令
+export ASCEND_RT_VISIBLE_DEVICES=8,9,10,11,12,13,14,15
+
+scp -r root@90.90.122.196:/autotest/pytorch/torch_autotest/model/run/MindSpeed_RL_DAPO_Qwen25_32B/8p_bf16/MindSpeed-RL/examples/dapo/dapo_trainer_qwen25_32b_20k.sh /autotest/pytorch/torch_autotest/model/run/MindSpeed_RL_DAPO_Qwen25_32B/8p_bf16/MindSpeed-RL/examples/dapo/
+
+scp -r root@90.90.122.196:/autotest/pytorch/torch_autotest/model/run/MindSpeed_RL_DAPO_Qwen25_32B/8p_bf16/MindSpeed-RL/configs/dapo_qwen25_32b_A2_20k.yaml /autotest/pytorch/torch_autotest/model/run/MindSpeed_RL_DAPO_Qwen25_32B/8p_bf16/MindSpeed-RL/configs/
+
+【Computing-lab】环境排期 - 服务器密码下发
+【工单标题】qwen3-next-80b开发
+【说明】如需root权限，请登录后使用 `sudo su - root` 切换；时间段到期将回收密码和用户进程，请提前保管好数据。如无法正常使用，请提前联系管理员 x00893919 处理！！
+-----------------------------------------------------------------------------------
+
