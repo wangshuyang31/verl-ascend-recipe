@@ -217,8 +217,8 @@ search openstacklocal
 nameserver 10.10.10.10
 nameserver 100.125.248.9
 nameserver 100.125.248.10
-export http_proxy="http://w00914260:Davit.1998@proxy.huawei.com:8080/"
-export https_proxy="http://w00914260:Davit.1998@proxy.huawei.com:8080/"
+export http_proxy="http://w00914260:Da98@proxy.huawei.com:8080/"
+export https_proxy="http://w00914260:Da@proxy.huawei.com:8080/"
 unset https_proxy
 unset http_proxy
 vim  ~/.bashrc
